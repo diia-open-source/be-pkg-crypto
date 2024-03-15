@@ -26,7 +26,7 @@ This repository contains the package with tools for encryption and auth.
 Example:
 
 ```
-git clone https://github.com/diia-open-source/pkg-crypto.git
+git clone https://github.com/diia-open-source/be-pkg-crypto.git pkg-crypto
 ```
 
 ---
