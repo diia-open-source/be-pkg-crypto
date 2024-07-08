@@ -180,7 +180,7 @@ describe(`${AuthService.name} service`, () => {
 
         it('should fail to decode token in case configuration for jwt is not present', async () => {
             const token = generateIdentifier()
-            const authService = new AuthService({ ...config, ...{ jwt: undefined } }, logger)
+            const authService = new AuthService({ ...config, jwt: undefined }, logger)
 
             await expect(async () => {
                 await authService.decodeToken(token)

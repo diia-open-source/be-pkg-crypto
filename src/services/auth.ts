@@ -43,7 +43,9 @@ export class AuthService implements OnInit {
     }
 
     async onInit(): Promise<void> {
-        await this.jwe?.onInit()
+        if (this.jwe) {
+            await this.jwe.onInit()
+        }
     }
 
     newInstance(authConfig: AuthConfig, logger: Logger): AuthService {
@@ -181,10 +183,8 @@ export class AuthService implements OnInit {
             this.logger.error('Failed to validate verified JWT', { err })
             let errMessage = ''
 
-            if (err instanceof Error) {
-                if (err.message === 'jwt malformed') {
-                    errMessage = 'Invalid token'
-                }
+            if (err instanceof Error && err.message === 'jwt malformed') {
+                errMessage = 'Invalid token'
             }
 
             throw new UnauthorizedError(errMessage)

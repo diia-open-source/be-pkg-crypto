@@ -1,4 +1,5 @@
-import { createHmac } from 'crypto'
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
+import { createHmac } from 'node:crypto'
 
 export class HashService {
     hmac(data: string, secret: string, algorithm = 'sha512'): string {

@@ -43,13 +43,13 @@ export class JweService implements OnInit {
                 return data
             }
             case typeof data === 'object' && data !== null: {
-                Object.entries(data).forEach(([key, value]) => {
+                for (const [key, value] of Object.entries(data)) {
                     data[key] = this.handleUriData(value, uriHandler)
-                })
+                }
 
                 return data
             }
-            case typeof data === 'undefined': {
+            case data === undefined: {
                 return
             }
             default: {

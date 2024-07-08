@@ -1,4 +1,5 @@
-import { createHmac } from 'crypto'
+// eslint-disable-next-line n/no-unsupported-features/node-builtins
+import { createHmac } from 'node:crypto'
 
 import { IdentifierPrefix, SessionType } from '@diia-inhouse/types'
 
