@@ -1,6 +1,6 @@
 {
     "name": "@diia-inhouse/crypto",
-    "version": "1.11.0",
+    "version": "1.11.1",
     "description": "Tools for encryption and auth",
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
