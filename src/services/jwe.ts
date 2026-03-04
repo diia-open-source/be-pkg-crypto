@@ -2,7 +2,7 @@ import { JWE, JWK } from 'node-jose'
 
 import { Logger, OnInit, TokenData } from '@diia-inhouse/types'
 
-import { JwtToken } from '../interfaces'
+import { JwtToken } from '../interfaces/jwt'
 
 export class JweService implements OnInit {
     private key?: JWK.Key

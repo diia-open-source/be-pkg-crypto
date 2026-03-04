@@ -1,12 +1,13 @@
+import { mock } from 'vitest-mock-extended'
+
 import Logger from '@diia-inhouse/diia-logger'
-import { mockClass } from '@diia-inhouse/test'
 
 import { AuthService, CryptoService, HashService } from '../../../src'
 import { config } from '../../mocks/config'
 import { generateUuid } from '../../mocks/randomData'
 
 describe('CryptoService', () => {
-    const MockedLogger = mockClass(Logger)
+    const MockedLogger = mock(Logger)
     const logger: Logger = new MockedLogger()
 
     const authService = new AuthService(config, logger)
@@ -17,7 +18,7 @@ describe('CryptoService', () => {
         it('should successfully encrypt data in case input data is string', async () => {
             const expectedEncryptedData = 'encrypted-data'
 
-            jest.spyOn(authService, 'encryptJWE').mockResolvedValue(expectedEncryptedData)
+            vi.spyOn(authService, 'encryptJWE').mockResolvedValue(expectedEncryptedData)
 
             expect(await cryptoService.encryptData('data-to-encrypt')).toEqual({
                 hashData: undefined,
@@ -31,8 +32,8 @@ describe('CryptoService', () => {
             const expectedEncryptedData = 'encrypted-data'
             const expectedHashData = 'hash-data'
 
-            jest.spyOn(authService, 'encryptJWE').mockResolvedValue(expectedEncryptedData)
-            jest.spyOn(hashService, 'hmac').mockReturnValue(expectedHashData)
+            vi.spyOn(authService, 'encryptJWE').mockResolvedValue(expectedEncryptedData)
+            vi.spyOn(hashService, 'hmac').mockReturnValue(expectedHashData)
 
             expect(await cryptoService.encryptData(dataToEncrypt)).toEqual({
                 hashData: expectedHashData,
@@ -48,7 +49,7 @@ describe('CryptoService', () => {
             const encryptedData = 'encrypted-data'
             const expectedData = { data: 'data', id: generateUuid() }
 
-            jest.spyOn(authService, 'decryptJWE').mockResolvedValue(expectedData)
+            vi.spyOn(authService, 'decryptJWE').mockResolvedValue(expectedData)
 
             expect(await cryptoService.decryptData(encryptedData)).toEqual(expectedData)
             expect(authService.decryptJWE).toHaveBeenCalledWith(encryptedData)

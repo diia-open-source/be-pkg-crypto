@@ -1,5 +1,4 @@
 import { AuthConfig, JwtServiceParams } from '../../src/interfaces'
-
 import { generateIdentifier } from './randomData'
 
 export const config: AuthConfig = {
@@ -12,7 +11,7 @@ export const config: AuthConfig = {
             expiresIn: '30m',
         },
         tokenVerifyOptions: {
-            algorithms: ['SHA256'],
+            algorithms: ['RS256'],
             ignoreExpiration: false,
         },
     },

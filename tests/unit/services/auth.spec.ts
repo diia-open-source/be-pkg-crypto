@@ -1,37 +1,49 @@
+import { mock } from 'vitest-mock-extended'
+
 import Logger from '@diia-inhouse/diia-logger'
 import { UnauthorizedError } from '@diia-inhouse/errors'
-import { mockClass } from '@diia-inhouse/test'
 import { SessionType } from '@diia-inhouse/types'
 
-import { AuthService } from '../../../src'
+import { AuthService, JwtToken } from '../../../src'
+import { JweService } from '../../../src/services/jwe'
+import { JwtService } from '../../../src/services/jwt'
 import { config } from '../../mocks/config'
 import { generateIdentifier, generateUuid } from '../../mocks/randomData'
 
-const MockedLogger = mockClass(Logger)
+vi.mock('../../../src/services/jwt', () => ({
+    JwtService: class JwtServiceMock {
+        decode(): unknown {
+            return vi.fn()
+        }
 
-const jwtMock = {
-    decode: jest.fn(),
-    sign: jest.fn(),
-    verify: jest.fn(),
-}
-const jweMock = {
-    encryptJWE: jest.fn(),
-    decryptJWE: jest.fn(),
-}
+        decodeWithOptions(): unknown {
+            return vi.fn()
+        }
 
-jest.mock('../../../src/services/jwt', () => ({
-    JwtService: function (): unknown {
-        return jwtMock
+        sign(): unknown {
+            return vi.fn()
+        }
+
+        verify(): unknown {
+            return vi.fn()
+        }
     },
 }))
-jest.mock('../../../src/services/jwe', () => ({
-    JweService: function (): unknown {
-        return jweMock
+
+vi.mock('../../../src/services/jwe', () => ({
+    JweService: class JweServiceMock {
+        encryptJWE(): unknown {
+            return vi.fn()
+        }
+
+        decryptJWE(): unknown {
+            return vi.fn()
+        }
     },
 }))
 
 describe(`${AuthService.name} service`, () => {
-    const logger: Logger = new MockedLogger()
+    const logger = mock<Logger>()
 
     describe('Method: `validate`', () => {
         const token = generateIdentifier()
@@ -48,13 +60,15 @@ describe(`${AuthService.name} service`, () => {
             const expectedTokenData = { sessionType: SessionType.User, mobileUid, refreshToken }
             const encryptedData = { data: 'encrypted-data' }
 
-            jwtMock.verify.mockReturnValue(encryptedData)
-            jweMock.decryptJWE.mockResolvedValue(expectedTokenData)
+            vi.spyOn(JwtService.prototype, 'verify').mockReturnValue(encryptedData as unknown as JwtToken)
+            vi.spyOn(JweService.prototype, 'decryptJWE').mockResolvedValue(expectedTokenData)
+            vi.spyOn(JwtService.prototype, 'decode')
 
-            expect(await authService.validate(token, sessionTypes, mobileUid)).toEqual(expectedTokenData)
-            expect(jwtMock.decode).not.toHaveBeenCalledWith(token)
-            expect(jwtMock.verify).toHaveBeenCalledWith(token)
-            expect(jweMock.decryptJWE).toHaveBeenCalledWith(encryptedData.data)
+            const response = await authService.validate(token, sessionTypes, mobileUid)
+
+            expect(response).toEqual(expectedTokenData)
+            expect(JwtService.prototype.verify).toHaveBeenCalledWith(token)
+            expect(JweService.prototype.decryptJWE).toHaveBeenCalledWith(encryptedData.data)
         })
 
         it.each([
@@ -127,13 +141,13 @@ describe(`${AuthService.name} service`, () => {
                 expectedError,
                 originError,
             ) => {
-                jwtMock.decode.mockReturnValue(encryptedData)
-                jwtMock.verify.mockReturnValue(encryptedData)
-                jweMock.decryptJWE.mockResolvedValue(tokenData)
+                vi.spyOn(JwtService.prototype, 'decode').mockReturnValue(encryptedData as unknown as JwtToken)
+                vi.spyOn(JwtService.prototype, 'verify').mockReturnValue(encryptedData as unknown as JwtToken)
+                vi.spyOn(JweService.prototype, 'decryptJWE').mockResolvedValue(tokenData)
 
-                await expect(async () => {
-                    await authService.validate(inputToken, sessionTypes, inputMobileUid, skipJwtVerification)
-                }).rejects.toEqual(expectedError)
+                await expect(authService.validate(inputToken, sessionTypes, inputMobileUid, skipJwtVerification)).rejects.toEqual(
+                    expectedError,
+                )
                 expect(logger.error).toHaveBeenCalledWith('Failed to validate verified JWT', { err: originError })
             },
         )
@@ -142,13 +156,11 @@ describe(`${AuthService.name} service`, () => {
             const expectedError = new UnauthorizedError('Invalid token')
             const originError = new Error('jwt malformed')
 
-            jwtMock.decode.mockImplementationOnce(() => {
+            vi.spyOn(JwtService.prototype, 'decode').mockImplementationOnce(() => {
                 throw originError
             })
 
-            await expect(async () => {
-                await authService.validate(token, SessionType.User, mobileUid, true)
-            }).rejects.toEqual(expectedError)
+            await expect(authService.validate(token, SessionType.User, mobileUid, true)).rejects.toEqual(expectedError)
             expect(logger.error).toHaveBeenCalledWith('Failed to validate verified JWT', { err: originError })
         })
     })
@@ -160,45 +172,76 @@ describe(`${AuthService.name} service`, () => {
             const token = generateIdentifier()
             const authService = new AuthService(config, logger).newInstance(config, logger)
 
-            jwtMock.decode.mockReturnValue(encodedTokenData)
-            jweMock.decryptJWE.mockReturnValue(expectedTokenData)
+            vi.spyOn(JwtService.prototype, 'decode').mockReturnValue(encodedTokenData as unknown as JwtToken)
+            vi.spyOn(JweService.prototype, 'decryptJWE').mockResolvedValue(expectedTokenData)
 
             expect(await authService.decodeToken(token)).toEqual(expectedTokenData)
-            expect(jwtMock.decode).toHaveBeenCalledWith(token)
-            expect(jweMock.decryptJWE).toHaveBeenCalledWith(encodedTokenData.data)
+            expect(JwtService.prototype.decode).toHaveBeenCalledWith(token)
+            expect(JweService.prototype.decryptJWE).toHaveBeenCalledWith(encodedTokenData.data)
         })
 
         it('should return null when payload is empty', async () => {
             const token = generateIdentifier()
             const authService = new AuthService(config, logger)
 
-            jwtMock.decode.mockReturnValue(null)
+            vi.spyOn(JwtService.prototype, 'decode').mockReturnValue(null as unknown as JwtToken)
 
             expect(await authService.decodeToken(token)).toBeNull()
-            expect(jwtMock.decode).toHaveBeenCalledWith(token)
+            expect(JwtService.prototype.decode).toHaveBeenCalledWith(token)
         })
 
         it('should fail to decode token in case configuration for jwt is not present', async () => {
             const token = generateIdentifier()
             const authService = new AuthService({ ...config, jwt: undefined }, logger)
 
-            await expect(async () => {
-                await authService.decodeToken(token)
-            }).rejects.toEqual(new Error('Jwt config is not provided'))
+            await expect(authService.decodeToken(token)).rejects.toEqual(new Error('Jwt config is not provided'))
         })
     })
     describe('Method: `getJweInJwt`', () => {
         it('should successfully encode data and put it into jwt', async () => {
-            const expectedTokenData = { payload: 'some-encoded-data' }
+            const expectedTokenData = 'some-encoded-data'
             const tokenData = { userIdentifier: generateIdentifier() }
             const authService = new AuthService(config, logger)
 
-            jweMock.encryptJWE.mockResolvedValue(expectedTokenData.payload)
-            jwtMock.sign.mockReturnValue(expectedTokenData)
+            vi.spyOn(JweService.prototype, 'encryptJWE').mockResolvedValue(expectedTokenData)
+            vi.spyOn(JwtService.prototype, 'sign').mockReturnValue(expectedTokenData)
 
             expect(await authService.getJweInJwt(tokenData, '15m')).toEqual(expectedTokenData)
-            expect(jweMock.encryptJWE).toHaveBeenCalledWith(tokenData)
-            expect(jwtMock.sign).toHaveBeenCalledWith(expectedTokenData.payload, '15m')
+            expect(JweService.prototype.encryptJWE).toHaveBeenCalledWith(tokenData)
+            expect(JwtService.prototype.sign).toHaveBeenCalledWith(expectedTokenData, '15m')
+        })
+    })
+
+    describe('Method: `decodeTokenWithOptions`', () => {
+        it('should successfully decode token', async () => {
+            const expectedTokenData = {
+                exp: 1728303679,
+                jti: 'f2e52b7d-dca5-49a0-9809-e91a3230c7df',
+            }
+            const encodedTokenData = {
+                exp: 1728303679,
+                jti: 'f2e52b7d-dca5-49a0-9809-e91a3230c7df',
+            }
+            const token = generateIdentifier()
+            const authService = new AuthService(config, logger)
+
+            vi.spyOn(JwtService.prototype, 'decodeWithOptions').mockResolvedValue(encodedTokenData)
+            const response = await authService.decodeTokenComplete(token)
+
+            expect(response).toEqual(expectedTokenData)
+            expect(JwtService.prototype.decodeWithOptions).toHaveBeenCalledWith(token, { complete: true })
+        })
+
+        it('should return null when payload is empty', async () => {
+            const token = generateIdentifier()
+            const authService = new AuthService(config, logger)
+
+            vi.spyOn(JwtService.prototype, 'decodeWithOptions').mockReturnValueOnce(null)
+
+            const response = authService.decodeTokenComplete(token)
+
+            expect(response).toBeNull()
+            expect(JwtService.prototype.decodeWithOptions).toHaveBeenCalledWith(token, { complete: true })
         })
     })
 })

@@ -1,5 +1,4 @@
 import { DocumentDecryptedData, DocumentEncryptedDataResult } from '../interfaces/crypto'
-
 import { AuthService } from './auth'
 import { HashService } from './hash'
 
@@ -21,6 +20,6 @@ export class CryptoService {
     }
 
     async decryptData<T>(encryptedData: string): Promise<T> {
-        return <T>(<unknown>this.auth.decryptJWE(encryptedData))
+        return this.auth.decryptJWE(encryptedData) as unknown as T
     }
 }

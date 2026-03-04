@@ -5,6 +5,7 @@
         "declaration": true,
         "declarationDir": "dist/types",
         "baseUrl": ".",
+        "skipLibCheck": true,
         "strict": true
     },
     "include": ["src/**/*"],

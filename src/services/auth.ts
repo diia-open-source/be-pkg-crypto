@@ -1,7 +1,10 @@
+import { KeyObject } from 'node:crypto'
+
+import { Jwt, VerifyOptions } from 'jsonwebtoken'
+
 import { UnauthorizedError } from '@diia-inhouse/errors'
 import {
     AcquirerTokenData,
-    CabinetUserTokenData,
     EResidentApplicantTokenData,
     EResidentTokenData,
     Logger,
@@ -18,8 +21,7 @@ import {
 } from '@diia-inhouse/types'
 import { asserts } from '@diia-inhouse/utils'
 
-import { AuthConfig } from '../interfaces'
-
+import { AuthConfig } from '../interfaces/auth'
 import { JweService } from './jwe'
 import { JwtService } from './jwt'
 
@@ -52,13 +54,31 @@ export class AuthService implements OnInit {
         return new AuthService(authConfig, logger)
     }
 
-    async decodeToken(token: string): Promise<TokenData | null> {
+    /** Decodes JWT token and decrypts JWE payload */
+    async decodeToken<T = TokenData>(token: string, shouldDecrypt = true): Promise<T | null> {
         const payload = this.getJwtService().decode(token)
+
+        if (!shouldDecrypt) {
+            return payload as T
+        }
+
         if (payload) {
             return await this.decryptJWE(payload.data)
         }
 
         return null
+    }
+
+    /** Only decodes JWT token returning complete token data (header, payload, signature) */
+    decodeTokenComplete(token: string): Jwt | null {
+        return this.getJwtService().decodeWithOptions(token, { complete: true })
+    }
+
+    verifyToken<T>(token: string, publicKey: KeyObject, options?: VerifyOptions & { complete?: false }): T {
+        const service = this.getJwtService()
+        const tokenData = service.verifyWithOptions(token, publicKey, options)
+
+        return tokenData as T
     }
 
     async getJweInJwt(data: unknown, expiresIn?: string): Promise<string> {
@@ -69,6 +89,10 @@ export class AuthService implements OnInit {
 
     async getJWT(enc: string, expiresIn?: string): Promise<string> {
         return this.getJwtService().sign(enc, expiresIn)
+    }
+
+    async getJWTPayload(payload: string | Buffer | object, expiresIn?: string): Promise<string> {
+        return this.getJwtService().signPayload(payload, expiresIn)
     }
 
     async encryptJWE(data: unknown): Promise<string> {
@@ -97,12 +121,6 @@ export class AuthService implements OnInit {
         mobileUid?: string,
         skipJwtVerification?: boolean,
     ): Promise<VerifiedBaseTokenData<ServiceEntranceTokenData>>
-    async validate(
-        authToken: string | null,
-        tokenSessionType: SessionType.CabinetUser,
-        mobileUid?: string,
-        skipJwtVerification?: boolean,
-    ): Promise<VerifiedBaseTokenData<CabinetUserTokenData>>
     async validate(
         authToken: string | null,
         tokenSessionType: SessionType.Temporary,

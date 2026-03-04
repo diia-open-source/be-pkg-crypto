@@ -1,7 +1,9 @@
-import * as jwt from 'jsonwebtoken'
-import { decode } from 'jsonwebtoken'
+import { KeyObject } from 'node:crypto'
 
-import { JwtServiceParams, JwtToken, TokenSignOptions, TokenVerifyOptions } from '../interfaces'
+import * as jwt from 'jsonwebtoken'
+import { DecodeOptions, Jwt, JwtPayload, VerifyOptions, decode } from 'jsonwebtoken'
+
+import { JwtServiceParams, JwtToken, TokenSignOptions, TokenVerifyOptions } from '../interfaces/jwt'
 
 export class JwtService {
     private readonly privateKey: string | undefined
@@ -22,6 +24,10 @@ export class JwtService {
     }
 
     sign(data: string, expiresIn?: string): string {
+        return this.signPayload({ data }, expiresIn)
+    }
+
+    signPayload(payload: string | Buffer | object, expiresIn?: string): string {
         if (!this.privateKey) {
             throw new Error('Private key not provided to sign data')
         }
@@ -31,7 +37,7 @@ export class JwtService {
             signOptions.expiresIn = expiresIn
         }
 
-        return jwt.sign({ data }, this.privateKey, <jwt.SignOptions>signOptions)
+        return jwt.sign(payload, this.privateKey, signOptions as jwt.SignOptions)
     }
 
     verify(jwtToken: string): JwtToken {
@@ -39,10 +45,22 @@ export class JwtService {
             throw new Error('Public key is not provided to verify jwt')
         }
 
-        return <JwtToken>jwt.verify(jwtToken, this.publicKey, <jwt.VerifyOptions>this.tokenVerifyOptions)
+        return jwt.verify(jwtToken, this.publicKey, this.tokenVerifyOptions) as JwtToken
+    }
+
+    verifyWithOptions(jwtToken: string, publicKey: KeyObject, options?: VerifyOptions & { complete?: true }): Jwt
+    verifyWithOptions(jwtToken: string, publicKey: KeyObject, options?: VerifyOptions & { complete?: false }): JwtPayload | string
+    verifyWithOptions(jwtToken: string, publicKey: KeyObject, options?: VerifyOptions): Jwt | JwtPayload | string {
+        return jwt.verify(jwtToken, publicKey, options)
     }
 
     decode(token: string): JwtToken {
-        return <JwtToken>decode(token)
+        return decode(token) as JwtToken
+    }
+
+    decodeWithOptions(token: string, options?: DecodeOptions & { complete: true }): null | Jwt
+    decodeWithOptions(token: string, options?: DecodeOptions & { json: true }): null | JwtPayload
+    decodeWithOptions(token: string, options?: DecodeOptions): null | JwtPayload | string {
+        return decode(token, options)
     }
 }
