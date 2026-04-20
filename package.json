@@ -1,6 +1,6 @@
 {
     "name": "@diia-inhouse/crypto",
-    "version": "1.20.8",
+    "version": "1.20.9",
     "description": "Tools for encryption and auth",
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts",
@@ -37,7 +37,7 @@
     },
     "devDependencies": {
         "@diia-inhouse/configs": "6.1.1",
-        "@diia-inhouse/diia-logger": "3.19.13",
+        "@diia-inhouse/diia-logger": "3.19.14",
         "@diia-inhouse/errors": "1.18.17",
         "@diia-inhouse/eslint-config": "8.8.0",
         "@diia-inhouse/test": "7.3.16",
