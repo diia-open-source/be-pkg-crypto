@@ -13,19 +13,19 @@ import { generateIdentifier, generateUuid } from '../../mocks/randomData'
 vi.mock('../../../src/services/jwt', () => ({
     JwtService: class JwtServiceMock {
         decode(): unknown {
-            return vi.fn()
+            return vi.fn<() => unknown>()
         }
 
         decodeWithOptions(): unknown {
-            return vi.fn()
+            return vi.fn<() => unknown>()
         }
 
         sign(): unknown {
-            return vi.fn()
+            return vi.fn<() => unknown>()
         }
 
         verify(): unknown {
-            return vi.fn()
+            return vi.fn<() => unknown>()
         }
     },
 }))
@@ -33,11 +33,11 @@ vi.mock('../../../src/services/jwt', () => ({
 vi.mock('../../../src/services/jwe', () => ({
     JweService: class JweServiceMock {
         encryptJWE(): unknown {
-            return vi.fn()
+            return vi.fn<() => unknown>()
         }
 
         decryptJWE(): unknown {
-            return vi.fn()
+            return vi.fn<() => unknown>()
         }
     },
 }))
@@ -225,8 +225,8 @@ describe(`${AuthService.name} service`, () => {
             const token = generateIdentifier()
             const authService = new AuthService(config, logger)
 
-            vi.spyOn(JwtService.prototype, 'decodeWithOptions').mockResolvedValue(encodedTokenData)
-            const response = await authService.decodeTokenComplete(token)
+            vi.spyOn(JwtService.prototype, 'decodeWithOptions').mockReturnValueOnce(encodedTokenData)
+            const response = authService.decodeTokenComplete(token)
 
             expect(response).toEqual(expectedTokenData)
             expect(JwtService.prototype.decodeWithOptions).toHaveBeenCalledWith(token, { complete: true })

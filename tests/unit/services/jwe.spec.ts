@@ -1,4 +1,4 @@
-import DiiaLogger from '@diia-inhouse/diia-logger'
+import { DiiaLogger } from '@diia-inhouse/diia-logger'
 
 import { JweService } from '../../../src'
 

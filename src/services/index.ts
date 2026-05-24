@@ -1,11 +1,11 @@
-export * from './auth'
+export * from './auth.js'
 
-export * from './crypto'
+export * from './crypto.js'
 
-export * from './jwe'
+export * from './jwe.js'
 
-export * from './jwt'
+export * from './jwt.js'
 
-export * from './identifier'
+export * from './identifier.js'
 
-export * from './hash'
+export * from './hash.js'

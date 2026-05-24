@@ -19,11 +19,12 @@ import {
     UserTokenData,
     VerifiedBaseTokenData,
 } from '@diia-inhouse/types'
+// oxlint-disable-next-line eslint/no-restricted-imports
 import { asserts } from '@diia-inhouse/utils'
 
-import { AuthConfig } from '../interfaces/auth'
-import { JweService } from './jwe'
-import { JwtService } from './jwt'
+import { AuthConfig } from '../interfaces/auth.js'
+import { JweService } from './jwe.js'
+import { JwtService } from './jwt.js'
 
 export class AuthService implements OnInit {
     private jwe: JweService | null = null

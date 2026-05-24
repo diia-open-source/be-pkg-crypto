@@ -1,4 +1,4 @@
-import { AuthService, CryptoService, HashService, IdentifierService } from '../services'
+import { AuthService, CryptoService, HashService, IdentifierService } from '../services/index.js'
 
 export type CryptoDeps = {
     auth?: AuthService

@@ -1,9 +1,10 @@
 import { KeyObject } from 'node:crypto'
 
-import * as jwt from 'jsonwebtoken'
-import { DecodeOptions, Jwt, JwtPayload, VerifyOptions, decode } from 'jsonwebtoken'
+import jwt, { type DecodeOptions, type Jwt, type JwtPayload, type VerifyOptions } from 'jsonwebtoken'
 
-import { JwtServiceParams, JwtToken, TokenSignOptions, TokenVerifyOptions } from '../interfaces/jwt'
+import { JwtServiceParams, JwtToken, TokenSignOptions, TokenVerifyOptions } from '../interfaces/jwt.js'
+
+const { decode } = jwt
 
 export class JwtService {
     private readonly privateKey: string | undefined

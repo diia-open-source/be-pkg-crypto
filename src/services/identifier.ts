@@ -2,7 +2,7 @@ import { createHmac } from 'node:crypto'
 
 import { IdentifierPrefix, SessionType } from '@diia-inhouse/types'
 
-import { IdentifierConfig, IdentifierOps } from '../interfaces/identifier'
+import { IdentifierConfig, IdentifierOps } from '../interfaces/identifier.js'
 
 export class IdentifierService {
     private readonly salt: string

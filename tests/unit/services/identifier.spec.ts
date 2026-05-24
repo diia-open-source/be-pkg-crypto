@@ -39,14 +39,14 @@ describe('IdentifierService', () => {
 
     describe('method: `getSessionTypeFromIdentifier`', () => {
         it('should return SessionType.EResidentApplicant for user identifier starting with IdentifierPrefix.EResidentApplicant', () => {
-            const userIdentifier = IdentifierPrefix.EResidentApplicant + 'someIdentifier'
+            const userIdentifier = `${IdentifierPrefix.EResidentApplicant}someIdentifier`
             const sessionType = identifierService.getSessionTypeFromIdentifier(userIdentifier)
 
             expect(sessionType).toBe(SessionType.EResidentApplicant)
         })
 
         it('should return SessionType.EResident for user identifier starting with IdentifierPrefix.EResident', () => {
-            const userIdentifier = IdentifierPrefix.EResident + 'someIdentifier'
+            const userIdentifier = `${IdentifierPrefix.EResident}someIdentifier`
             const sessionType = identifierService.getSessionTypeFromIdentifier(userIdentifier)
 
             expect(sessionType).toBe(SessionType.EResident)

@@ -34,7 +34,7 @@ describe(`${JwtService.name} service`, () => {
             key: jwtServiceParams.publicKey!,
             format: 'pem',
         })
-        const result = await (jwtService.verifyWithOptions(token, publicKey, { algorithms: ['RS256'] }) as unknown as JwtToken)
+        const result = jwtService.verifyWithOptions(token, publicKey, { algorithms: ['RS256'] }) as unknown as JwtToken
 
         expect(JSON.parse(result.data)).toEqual(payload)
     })

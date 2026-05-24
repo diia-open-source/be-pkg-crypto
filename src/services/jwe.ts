@@ -1,11 +1,13 @@
-import { JWE, JWK } from 'node-jose'
+import nodeJose from 'node-jose'
 
 import { Logger, OnInit, TokenData } from '@diia-inhouse/types'
 
-import { JwtToken } from '../interfaces/jwt'
+import { JwtToken } from '../interfaces/jwt.js'
+
+const { JWE, JWK } = nodeJose
 
 export class JweService implements OnInit {
-    private key?: JWK.Key
+    private key?: nodeJose.JWK.Key
 
     constructor(
         private jwkSecretData: string,
@@ -33,7 +35,7 @@ export class JweService implements OnInit {
         return decodedTokenData
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     private handleUriData(data: any, uriHandler: (str: string) => string): any {
         switch (true) {
             case Array.isArray(data): {
@@ -58,7 +60,7 @@ export class JweService implements OnInit {
         }
     }
 
-    private getKey(): JWK.Key | never {
+    private getKey(): nodeJose.JWK.Key | never {
         if (!this.key) {
             throw new Error('JWK key is not defined!')
         }

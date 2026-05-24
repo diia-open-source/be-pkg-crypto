@@ -1,6 +1,6 @@
-import { DocumentDecryptedData, DocumentEncryptedDataResult } from '../interfaces/crypto'
-import { AuthService } from './auth'
-import { HashService } from './hash'
+import { DocumentDecryptedData, DocumentEncryptedDataResult } from '../interfaces/crypto.js'
+import { AuthService } from './auth.js'
+import { HashService } from './hash.js'
 
 export class CryptoService {
     constructor(

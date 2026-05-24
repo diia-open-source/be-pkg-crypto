@@ -1,9 +1,9 @@
-export * from './deps'
+export * from './deps.js'
 
-export * from './auth'
+export * from './auth.js'
 
-export * from './crypto'
+export * from './crypto.js'
 
-export * from './jwt'
+export * from './jwt.js'
 
-export * from './identifier'
+export * from './identifier.js'
