@@ -1,6 +1,6 @@
 {
     "name": "@diia-inhouse/crypto",
-    "version": "2.0.31",
+    "version": "2.0.32",
     "type": "module",
     "description": "Tools for encryption and auth",
     "main": "dist/index.js",
@@ -51,7 +51,7 @@
         "@diia-inhouse/test": "8.2.17",
         "@diia-inhouse/types": "14.1.1",
         "@diia-inhouse/utils": "6.0.43",
-        "@diia-inhouse/validators": "2.2.33",
+        "@diia-inhouse/validators": "2.2.34",
         "@types/node": "25.6.2",
         "@types/node-jose": "1.1.13",
         "@vitest/coverage-v8": "4.1.5",
