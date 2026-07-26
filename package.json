@@ -1,6 +1,6 @@
 {
     "name": "@diia-inhouse/crypto",
-    "version": "2.0.44",
+    "version": "2.0.45",
     "type": "module",
     "description": "Tools for encryption and auth",
     "main": "dist/index.js",
@@ -45,7 +45,7 @@
     },
     "devDependencies": {
         "@diia-inhouse/configs": "7.0.1",
-        "@diia-inhouse/diia-logger": "4.4.29",
+        "@diia-inhouse/diia-logger": "4.4.30",
         "@diia-inhouse/errors": "2.2.11",
         "@diia-inhouse/oxc-config": "2.1.1",
         "@diia-inhouse/test": "8.2.27",
