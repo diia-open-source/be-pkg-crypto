@@ -10,4 +10,26 @@ describe('HashService', () => {
             )
         })
     })
+
+    describe('method: `hash`', () => {
+        const hashService = new HashService()
+
+        it('should successfully generate hash from string', () => {
+            expect(hashService.hash('data-to-hash')).toBe(
+                '3f0094e7a69a362b8dda785bd7e6fd50161acb49b2e6b535bdf9d5410d0a085a2f18f2af97d52f144c5becefbea6894704a247e10d615904874f4dea71533896',
+            )
+        })
+
+        it('should successfully generate hash from buffer', () => {
+            const data = Buffer.from('data-to-hash')
+
+            expect(hashService.hash(data)).toBe(hashService.hash('data-to-hash'))
+        })
+
+        it('should support custom algorithm for buffer', () => {
+            const data = Buffer.from('data-to-hash')
+
+            expect(hashService.hash(data, 'sha256')).toBe('a092ee67312ce839f157caebba6a011321ba13ecb9b6e8a6f4220590b4c2fd62')
+        })
+    })
 })

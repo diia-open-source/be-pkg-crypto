@@ -1,4 +1,4 @@
-import { BinaryToTextEncoding, createHash, createHmac } from 'node:crypto'
+import { BinaryLike, BinaryToTextEncoding, createHash, createHmac } from 'node:crypto'
 
 export class HashService {
     hmac(data: string, secret: string, algorithm = 'sha512', encodeTo: BinaryToTextEncoding = 'hex'): string {
@@ -9,7 +9,7 @@ export class HashService {
         return hash.digest(encodeTo)
     }
 
-    hash(data: string, algorithm = 'sha512', encodeTo: BinaryToTextEncoding = 'hex'): string {
+    hash(data: BinaryLike, algorithm = 'sha512', encodeTo: BinaryToTextEncoding = 'hex'): string {
         const hash = createHash(algorithm)
 
         hash.update(data)
