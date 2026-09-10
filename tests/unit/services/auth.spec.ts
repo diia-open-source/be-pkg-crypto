@@ -60,7 +60,7 @@ describe(`${AuthService.name} service`, () => {
             const expectedTokenData = { sessionType: SessionType.User, mobileUid, refreshToken }
             const encryptedData = { data: 'encrypted-data' }
 
-            vi.spyOn(JwtService.prototype, 'verify').mockReturnValue(encryptedData as unknown as JwtToken)
+            vi.spyOn(JwtService.prototype, 'verify').mockReturnValue(encryptedData)
             vi.spyOn(JweService.prototype, 'decryptJWE').mockResolvedValue(expectedTokenData)
             vi.spyOn(JwtService.prototype, 'decode')
 
@@ -172,7 +172,7 @@ describe(`${AuthService.name} service`, () => {
             const token = generateIdentifier()
             const authService = new AuthService(config, logger).newInstance(config, logger)
 
-            vi.spyOn(JwtService.prototype, 'decode').mockReturnValue(encodedTokenData as unknown as JwtToken)
+            vi.spyOn(JwtService.prototype, 'decode').mockReturnValue(encodedTokenData)
             vi.spyOn(JweService.prototype, 'decryptJWE').mockResolvedValue(expectedTokenData)
 
             expect(await authService.decodeToken(token)).toEqual(expectedTokenData)
