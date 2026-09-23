@@ -1,6 +1,6 @@
 {
     "name": "@diia-inhouse/crypto",
-    "version": "2.1.28",
+    "version": "2.1.29",
     "type": "module",
     "description": "Tools for encryption and auth",
     "main": "dist/index.js",
@@ -50,8 +50,8 @@
         "@diia-inhouse/oxc-config": "2.1.7",
         "@diia-inhouse/test": "8.3.23",
         "@diia-inhouse/types": "14.2.13",
-        "@diia-inhouse/utils": "6.1.12",
-        "@diia-inhouse/validators": "2.2.87",
+        "@diia-inhouse/utils": "6.1.13",
+        "@diia-inhouse/validators": "2.2.88",
         "@types/node": "25.6.2",
         "@types/node-jose": "1.1.13",
         "@vitest/coverage-v8": "4.1.11",
