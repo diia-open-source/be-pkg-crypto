@@ -1,8 +1,14 @@
 {
     "name": "@diia-inhouse/crypto",
-    "version": "2.1.42",
-    "type": "module",
+    "version": "2.1.43",
     "description": "Tools for encryption and auth",
+    "license": "SEE LICENSE IN LICENSE.md",
+    "author": "diia-team",
+    "repository": "https://github.com/diia-open-source/be-pkg-crypto",
+    "files": [
+        "dist"
+    ],
+    "type": "module",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "exports": {
@@ -11,15 +17,6 @@
             "default": "./dist/index.js"
         },
         "./package.json": "./package.json"
-    },
-    "repository": "https://github.com/diia-open-source/be-pkg-crypto",
-    "author": "Diia",
-    "license": "SEE LICENSE IN LICENSE.md",
-    "files": [
-        "dist"
-    ],
-    "engines": {
-        "node": ">=24"
     },
     "scripts": {
         "prebuild": "rimraf dist",
@@ -38,34 +35,37 @@
         "jsonwebtoken": "9.0.3",
         "node-jose": "2.2.0"
     },
+    "devDependencies": {
+        "@diia-inhouse/configs": "7.2.2",
+        "@diia-inhouse/diia-logger": "4.7.14",
+        "@diia-inhouse/errors": "2.3.23",
+        "@diia-inhouse/oxc-config": "4.0.3",
+        "@diia-inhouse/test": "8.3.39",
+        "@diia-inhouse/types": "14.6.0",
+        "@diia-inhouse/utils": "6.1.25",
+        "@diia-inhouse/validators": "2.2.111",
+        "@types/node": "25.9.9",
+        "@types/node-jose": "1.1.13",
+        "@vitest/coverage-v8": "4.1.11",
+        "@vitest/ui": "4.1.11",
+        "glob": "13.0.6",
+        "lockfile-lint": "5.1.0",
+        "madge": "8.0.0",
+        "oxfmt": "0.73.0",
+        "oxlint": "1.88.0",
+        "oxlint-tsgolint": "7.0.2004",
+        "rimraf": "6.1.3",
+        "tsdown": "0.23.1",
+        "vitest": "4.1.11",
+        "vitest-mock-extended": "5.1.1"
+    },
     "peerDependencies": {
         "@diia-inhouse/errors": ">=1.0.0",
         "@diia-inhouse/types": ">=2.8.1",
         "@diia-inhouse/utils": ">=2.1.0"
     },
-    "devDependencies": {
-        "@diia-inhouse/configs": "7.2.2",
-        "@diia-inhouse/diia-logger": "4.7.12",
-        "@diia-inhouse/errors": "2.3.20",
-        "@diia-inhouse/oxc-config": "2.1.7",
-        "@diia-inhouse/test": "8.3.37",
-        "@diia-inhouse/types": "14.5.3",
-        "@diia-inhouse/utils": "6.1.21",
-        "@diia-inhouse/validators": "2.2.108",
-        "@types/node": "25.6.2",
-        "@types/node-jose": "1.1.13",
-        "@vitest/coverage-v8": "4.1.11",
-        "@vitest/ui": "4.1.11",
-        "glob": "13.0.6",
-        "lockfile-lint": "5.0.1",
-        "madge": "8.0.0",
-        "oxfmt": "0.67.0",
-        "oxlint": "1.82.0",
-        "oxlint-tsgolint": "7.0.2001",
-        "rimraf": "6.1.3",
-        "tsdown": "0.23.0",
-        "vitest": "4.1.11",
-        "vitest-mock-extended": "5.1.1"
+    "commitlint": {
+        "extends": "@diia-inhouse/configs/dist/commitlint"
     },
     "release": {
         "extends": "@diia-inhouse/configs/dist/semantic-release/package",
@@ -73,8 +73,8 @@
             "main"
         ]
     },
-    "commitlint": {
-        "extends": "@diia-inhouse/configs/dist/commitlint"
+    "engines": {
+        "node": ">=24"
     },
     "madge": {
         "tsConfig": "./tsconfig.json"
