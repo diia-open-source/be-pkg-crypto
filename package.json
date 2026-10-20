@@ -1,6 +1,6 @@
 {
     "name": "@diia-inhouse/crypto",
-    "version": "2.1.50",
+    "version": "2.1.51",
     "description": "Tools for encryption and auth",
     "license": "SEE LICENSE IN LICENSE.md",
     "author": "diia-team",
@@ -37,7 +37,7 @@
     },
     "devDependencies": {
         "@diia-inhouse/configs": "7.2.2",
-        "@diia-inhouse/diia-logger": "4.7.21",
+        "@diia-inhouse/diia-logger": "4.7.22",
         "@diia-inhouse/errors": "2.3.25",
         "@diia-inhouse/oxc-config": "5.0.0",
         "@diia-inhouse/test": "8.3.40",
