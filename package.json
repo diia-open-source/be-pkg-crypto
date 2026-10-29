@@ -1,6 +1,6 @@
 {
     "name": "@diia-inhouse/crypto",
-    "version": "2.1.57",
+    "version": "2.2.0",
     "description": "Tools for encryption and auth",
     "license": "SEE LICENSE IN LICENSE.md",
     "author": "diia-team",
@@ -41,7 +41,7 @@
         "@diia-inhouse/errors": "2.3.32",
         "@diia-inhouse/oxc-config": "5.0.2",
         "@diia-inhouse/test": "8.3.46",
-        "@diia-inhouse/types": "14.9.2",
+        "@diia-inhouse/types": "14.10.0",
         "@diia-inhouse/utils": "6.1.40",
         "@diia-inhouse/validators": "2.2.124",
         "@types/node": "25.9.9",

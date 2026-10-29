@@ -10,7 +10,6 @@ import {
     Logger,
     OnInit,
     PartnerTokenData,
-    PortalUserTokenData,
     ServiceEntranceTokenData,
     ServiceUserTokenData,
     SessionType,
@@ -140,12 +139,6 @@ export class AuthService implements OnInit {
         mobileUid?: string,
         skipJwtVerification?: boolean,
     ): Promise<VerifiedBaseTokenData<EResidentApplicantTokenData>>
-    async validate(
-        authToken: string | null,
-        tokenSessionType: SessionType.PortalUser,
-        mobileUid?: string,
-        skipJwtVerification?: boolean,
-    ): Promise<VerifiedBaseTokenData<PortalUserTokenData>>
     async validate(
         authToken: string | null,
         tokenSessionType: SessionType.Partner,
