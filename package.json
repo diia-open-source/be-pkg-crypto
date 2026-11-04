@@ -1,6 +1,6 @@
 {
     "name": "@diia-inhouse/crypto",
-    "version": "2.2.11",
+    "version": "2.2.12",
     "description": "Tools for encryption and auth",
     "license": "SEE LICENSE IN LICENSE.md",
     "author": "diia-team",
@@ -48,7 +48,7 @@
         "@types/node-jose": "1.1.13",
         "@vitest/coverage-v8": "4.1.11",
         "@vitest/ui": "4.1.11",
-        "glob": "13.0.6",
+        "glob": "14.0.2",
         "lockfile-lint": "5.1.0",
         "madge": "8.0.0",
         "oxfmt": "0.73.0",
